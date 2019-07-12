@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const postRoutes = require("./routes/post");
+const errorHandler = require("./middleware/errorHandler")
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use("/api/post", postRoutes);
 app.get("/", (req, res) => {
   res.send("welcome..d.");
 });
+
+app.use(errorHandler)
 
 app.listen(port, () => {
   console.log(`Running on port ${port}`);
