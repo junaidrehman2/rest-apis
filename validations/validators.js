@@ -1,5 +1,5 @@
 const { body } = require("express-validator/check");
 
-exports.hasName = body("name")
+exports.hasDescription = body("description")
   .isLength({ min: 5 })
-  .withMessage("Name is required. Min Length 5 Characters");
+  .withMessage("Description is required. Min Length 5 Characters");

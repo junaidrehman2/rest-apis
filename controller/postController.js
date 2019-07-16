@@ -7,7 +7,7 @@ exports.index = (req, res) => {
 exports.store = (req, res, next) => {
   try {
     validationHandler(req);
-    res.send({ message: "the name is" + req.body.name });
+    res.send({ message: "the description is" + req.body.description });
   } catch (err) {
     next(err);
   }
