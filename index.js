@@ -3,7 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
+const passportJWT = require("./middleware/passportJWT")();
 const postRoutes = require("./routes/post");
+const authRoutes = require("./routes/auth");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -17,9 +19,11 @@ mongoose.connect("mongodb://localhost/rest-api-node", {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(passportJWT.initialize());
 
 const port = process.env.PORT || 3100;
 app.use("/api/post", postRoutes);
+app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("welcome..d.");
 });
