@@ -7,6 +7,7 @@ const passportJWT = require("./middleware/passportJWT")();
 const postRoutes = require("./routes/post");
 const authRoutes = require("./routes/auth");
 const errorHandler = require("./middleware/errorHandler");
+const followRoutes = require("./routes/following");
 
 const app = express();
 
@@ -22,8 +23,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(passportJWT.initialize());
 
 const port = process.env.PORT || 3100;
-app.use("/api/post", postRoutes);
+app.use("/api/post", passportJWT.authenticate(), postRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/follow", passportJWT.authenticate(), followRoutes);
 app.get("/", (req, res) => {
   res.send("welcome..d.");
 });
