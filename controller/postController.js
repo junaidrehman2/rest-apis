@@ -2,12 +2,18 @@ const Post = require("../models/post");
 const validationHandler = require("../validations/validationHandler");
 
 exports.index = async (req, res, next) => {
+  let page = req.query.page || 1;
+  let items = req.query.items || 10;
+
   try {
     const posts = await Post.find({
       user: { $in: [req.user.id, ...req.user.following] }
     })
       .populate("user")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * items)
+      .limit(parseInt(items));
+
     res.send(posts);
   } catch (err) {
     next(err);
@@ -31,7 +37,7 @@ exports.store = async (req, res, next) => {
   try {
     validationHandler(req);
 
-    console.log(req.user);
+    
     let post = new Post();
     post.description = req.body.description;
     post.image = req.file.filename;

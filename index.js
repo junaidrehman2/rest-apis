@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
+const rateLimit = require("express-rate-limit");
 const passportJWT = require("./middleware/passportJWT")();
 const postRoutes = require("./routes/post");
 const authRoutes = require("./routes/auth");
@@ -12,6 +13,15 @@ const followRoutes = require("./routes/following");
 const app = express();
 
 // app.use(cors);
+
+app.enable("trust proxy");
+const limiter = rateLimit({
+  windowMs: 10 * 1000, // 10 seconds
+  max: 5 // limit each IP to 5 requests per windowMs
+});
+//  apply to all requests
+app.use(limiter);
+
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost/rest-api-node", {
   useNewUrlParser: true
