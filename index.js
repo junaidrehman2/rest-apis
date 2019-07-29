@@ -9,6 +9,7 @@ const postRoutes = require("./routes/post");
 const authRoutes = require("./routes/auth");
 const errorHandler = require("./middleware/errorHandler");
 const followRoutes = require("./routes/following");
+const config = require("./config");
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.use(cors());
 // app.use(limiter);
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/rest-api-node", {
+mongoose.connect(config.mongoURI, {
   useNewUrlParser: true
 });
 
